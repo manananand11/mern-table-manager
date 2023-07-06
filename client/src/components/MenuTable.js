@@ -18,7 +18,7 @@ import {
   useToast,
   Icon,
 } from "@chakra-ui/react";
-import axios from "axios";
+
 import {
   CheckIcon,
   ChevronDownIcon,
@@ -27,6 +27,12 @@ import {
   RepeatIcon,
 } from "@chakra-ui/icons";
 import { makeRequest } from "../axios";
+import MenuFilter from "./MenuFilter";
+import MenuItem from "./MenuItem";
+import categories from "../constants/categories";
+import TableHead from "./TableHead";
+import TableFoot from "./TableFoot";
+import TableBody from "./TableBody";
 
 function MenuTable() {
   const [menuItems, setMenuItems] = useState([]);
@@ -106,120 +112,29 @@ function MenuTable() {
     console.log(selectedCategory);
   }, [selectedCategory]);
 
-  const categories = ["All", "Appetizer", "Mains", "Dessert", "Weird", "Clone"];
-
   return (
     <ChakraProvider>
       <Box py={8}>
-        <Flex mb={4}>
-          {categories.map((category) => (
-            <Button
-              key={category}
-              onClick={() => handleCategoryFilter(category)}
-              variant={selectedCategory === category ? "solid" : "outline"}
-              colorScheme="blue"
-              mr={2}
-            >
-              {category}
-            </Button>
-          ))}
-        </Flex>
+        <MenuFilter
+          categories={categories}
+          selectedCategory={selectedCategory}
+          handleCategoryFilter={handleCategoryFilter}
+        />
         <Table variant="striped" borderRadius="md">
-          <Thead>
-            <Tr>
-              <Th>Id</Th>
-              <Th>Image</Th>
-              <Th>Name</Th>
-              <Th>Category</Th>
-              <Th>Label</Th>
-              <Th>
-                <Flex
-                  align="center"
-                  onClick={handleSortByPrice}
-                  cursor="pointer"
-                >
-                  Price
-                  {sortDirection === "asc" ? (
-                    <Icon as={ChevronUpIcon} boxSize={4} ml={1} />
-                  ) : (
-                    <Icon as={ChevronDownIcon} boxSize={4} ml={1} />
-                  )}
-                </Flex>
-              </Th>
-              <Th>Description</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {updatedMenuItems
-              .filter((item) => {
-                if (
-                  selectedCategory &&
-                  selectedCategory.toLowerCase().trim() !== "all" &&
-                  item.category.toLowerCase().trim() !==
-                    selectedCategory.toLowerCase().trim()
-                ) {
-                  return false;
-                }
-                return true;
-              })
-              .map((item) => (
-                <Tr key={item.id}>
-                  <Td>{item.id}</Td>
-                  <Td>
-                    <chakra.div w="80px" mx="auto">
-                      <Image
-                        src={item.image}
-                        alt={item.name}
-                        borderRadius="md"
-                        boxSize="80px"
-                        objectFit="cover"
-                      />
-                    </chakra.div>
-                  </Td>
-                  <Td>{item.name}</Td>
-                  <Td>{item.category}</Td>
-                  <Td>{item.label}</Td>
-                  <Td>
-                    <Input
-                      type="number"
-                      value={item.price}
-                      onChange={(e) =>
-                        handlePriceChange(item.id, e.target.value)
-                      }
-                      borderRadius="md"
-                    />
-                  </Td>
-                  <Td>{item.description}</Td>
-                </Tr>
-              ))}
-          </Tbody>
-          <Tfoot>
-            <Tr>
-              <Th colSpan={7}>
-                <Button
-                  onClick={handleSaveChanges}
-                  loadingText="Saving..."
-                  leftIcon={<CheckIcon />}
-                  variant="solid"
-                  colorScheme="green"
-                  mr={2}
-                >
-                  Save
-                </Button>
-                <Button
-                  onClick={handleResetChanges}
-                  loadingText="Resetting..."
-                  leftIcon={<CloseIcon />}
-                  variant="solid"
-                  colorScheme="red"
-                >
-                  Reset
-                </Button>
-              </Th>
-            </Tr>
-          </Tfoot>
+          <TableHead
+            sortDirection={sortDirection}
+            handleSortByPrice={handleSortByPrice}
+          />
+          <TableBody
+            updatedMenuItems={updatedMenuItems}
+            selectedCategory={selectedCategory}
+            handlePriceChange={handlePriceChange}
+          />
+          <TableFoot
+            handleSaveChanges={handleSaveChanges}
+            handleResetChanges={handleResetChanges}
+          />
         </Table>
-        
       </Box>
     </ChakraProvider>
   );
