@@ -1,34 +1,9 @@
 import { useEffect, useState } from "react";
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tfoot,
-  Tr,
-  Th,
-  Td,
-  Box,
-  Image,
-  chakra,
-  ChakraProvider,
-  Button,
-  Flex,
-  Spacer,
-  Input,
-  useToast,
-  Icon,
-} from "@chakra-ui/react";
+import { Table, Box, ChakraProvider, useToast } from "@chakra-ui/react";
 
-import {
-  CheckIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-  CloseIcon,
-  RepeatIcon,
-} from "@chakra-ui/icons";
 import { makeRequest } from "../axios";
 import MenuFilter from "./MenuFilter";
-import MenuItem from "./MenuItem";
+
 import categories from "../constants/categories";
 import TableHead from "./TableHead";
 import TableFoot from "./TableFoot";
