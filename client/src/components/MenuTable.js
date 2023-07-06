@@ -8,6 +8,7 @@ import categories from "../constants/categories";
 import TableHead from "./TableHead";
 import TableFoot from "./TableFoot";
 import TableBody from "./TableBody";
+import Header from "./Header";
 
 function MenuTable() {
   const [menuItems, setMenuItems] = useState([]);
@@ -86,10 +87,12 @@ function MenuTable() {
   useEffect(() => {
     console.log(selectedCategory);
   }, [selectedCategory]);
+  
 
   return (
     <ChakraProvider>
       <Box py={8}>
+        <Header />
         <MenuFilter
           categories={categories}
           selectedCategory={selectedCategory}
